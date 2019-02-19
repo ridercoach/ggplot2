@@ -1,0 +1,107 @@
+---
+title: "ggplot2: Handout A, The Grammar of Graphics"
+author: "Eric N. Moyer"
+date: "`r Sys.Date()`"
+output:
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: pdflatex
+  tufte::tufte_html: default
+  tufte::tufte_book:
+    citation_package: natbib
+    latex_engine: pdflatex
+bibliography: skeleton.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+library(tufte)
+library(ggplot2)
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+```
+
+This is the first of a set of "Tufte Handouts" documenting my exploration of 
+Hadley Wickham's book *`ggplot2`: Elegant Graphics for Data Analysis, Second 
+Edition* (2016). The purpose is to record helpful bits of understanding while 
+exercising my skills.
+
+Everywhere in these handouts, the word "plot" means a plot produced by `ggplot2`.
+
+# The Grammar of Graphics
+
+`ggplot2` is built on a "layered grammar of graphics", which makes every plot
+the product of a uniform, deeply data-driven, theory of graphics, instead of just
+being another "special case" (as with most plotting systems.)
+
+From the book: "In brief, the grammar tells us that a statistical graphic is 
+a mapping from data to aesthetic attributes (colour, shape, size) of geometric 
+objects (points, lines, bars)."
+
+# Key Components of Every Plot
+
+Every plot begins with a call to `ggplot()`. Although you would never 
+do so in practice because all it gives you is an empty background, you could 
+just leave it at that, and the call would complete without errors:
+
+```{r fig-ggplot-alone}
+ggplot()
+```
+
+The *first* thing every plot needs is some data, which is always in 
+the form of at least one dataframe. The dataframe(s) can be provided 
+in various ways; often the primary one is passed to `ggplot()`:
+
+```{r fig-ggplot-dataonly}
+ggplot(mpg)
+```
+
+However, providing only the data (and nothing else) doesn't change anything, 
+because `ggplot2` doesn't know what to do with it, so the *second* thing every 
+plot needs is some "aesthetic mappings", which connect variables in the data 
+with "visual properties":
+
+```{r fig-ggplot-aes}
+ggplot(mpg, aes(x = displ, y = hwy))
+```
+
+We have told `ggplot2` to associate the visual property of horizontal 
+location (`x`) with the variable `displ`, and vertical location with `hwy`, 
+so `ggplot2` can look at the range of values for these variables and use 
+implicit "scale" components to create "guides" for reading the plot, which 
+in this case are tickmarks on the axes.
+
+But nothing appears on the plot because we have not specified what kind of 
+geometric object(s) to use, so the *third* thing every plot needs is a "layer" 
+for rendering each observation in the data, and this is usually specified with 
+a `geom` fuction:
+
+```{r fig-ggplot-done}
+ggplot(mpg, aes(displ, hwy)) + geom_point()
+```
+
+And now we have a complete plot, albeit a very simple one. `ggplot2` rendered 
+each observation in the `mpg` dataframe by using the `displ` and `hwy` variables 
+as the x- and y-coordinates of a point.
+
+There is much, much more to understand, but this is the foundation.
+
+Before leaving this first example, we note that for any geometric object, each 
+of the visual properties it supports can be either mapped to a variable in the 
+data or set to a constant.
+
+used here 
+(points), in addition to x and y position, also has the visual properties of 
+color, shape, and size.
+
+visual properties that 
+can be used to represent a variable often include such things as size, 
+shape, and color:
+
+```{r fig-ggplot-color}
+ggplot(mpg, aes(displ, hwy, color = class)) + geom_point()
+```
+
+
+
