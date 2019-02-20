@@ -32,24 +32,24 @@ Everywhere in these handouts, the word "plot" means a plot produced by `ggplot2`
 # The Grammar of Graphics
 
 `ggplot2` is built on a "layered grammar of graphics", which makes every plot
-the product of a uniform, deeply data-driven, theory of graphics, instead of just
-being another "special case" (as with most plotting systems.)
+the product of a uniform, deeply data-driven, theory of graphics, instead of 
+a "special case".
 
 From the book: "In brief, the grammar tells us that a statistical graphic is 
 a mapping from data to aesthetic attributes (colour, shape, size) of geometric 
 objects (points, lines, bars)."
 
-# Key Components of Every Plot
+# Three Things Every Plot Needs
 
-Every plot begins with a call to `ggplot()`. Although you would never 
-do so in practice because all it gives you is an empty background, you could 
-just leave it at that, and the call would complete without errors:
+Every plot begins with a call to `ggplot()`. You *could* just leave it at that, 
+and the call would complete without errors, but all you would get is an empty 
+background:
 
 ```{r fig-ggplot-alone}
 ggplot()
 ```
 
-The *first* thing every plot needs is some data, which is always in 
+So the *first* thing every plot needs is data, which is always in 
 the form of at least one dataframe. The dataframe(s) can be provided 
 in various ways; often the primary one is passed to `ggplot()`:
 
@@ -57,51 +57,43 @@ in various ways; often the primary one is passed to `ggplot()`:
 ggplot(mpg)
 ```
 
-However, providing only the data (and nothing else) doesn't change anything, 
-because `ggplot2` doesn't know what to do with it, so the *second* thing every 
-plot needs is some "aesthetic mappings", which connect variables in the data 
+This still doesn't get us very far, because we haven't told 
+`ggplot2` what to do with the data, so the *second* thing every 
+plot needs is "aesthetic mappings" to connect variables in the data 
 with "visual properties":
 
 ```{r fig-ggplot-aes}
 ggplot(mpg, aes(x = displ, y = hwy))
 ```
 
-We have told `ggplot2` to associate the visual property of horizontal 
-location (`x`) with the variable `displ`, and vertical location with `hwy`, 
-so `ggplot2` can look at the range of values for these variables and use 
-implicit "scale" components to create "guides" for reading the plot, which 
-in this case are tickmarks on the axes.
+Now we have told `ggplot2` to associate the visual property of horizontal
+location (`x`) with the variable `displ`, and vertical location with `hwy`, so
+it can look at the ranges of these variables and use implicit "scale" components
+to create "guides" for reading the plot, which in this case are tickmarks on the
+axes.
 
-But nothing appears on the plot because we have not specified what kind of 
-geometric object(s) to use, so the *third* thing every plot needs is a "layer" 
-for rendering each observation in the data, and this is usually specified with 
+However, nothing appears on the plot yet because we have not specified what kind of 
+geometric object(s) to use, so the *third* thing every plot needs is at least one "layer" 
+that renders the observations in the data, and this is usually specified with 
 a `geom` fuction:
 
 ```{r fig-ggplot-done}
-ggplot(mpg, aes(displ, hwy)) + geom_point()
+ggplot(mpg, aes(x = displ, y = hwy)) + geom_point()
 ```
 
-And now we have a complete plot, albeit a very simple one. `ggplot2` rendered 
-each observation in the `mpg` dataframe by using the `displ` and `hwy` variables 
-as the x- and y-coordinates of a point.
+Now we have a complete plot. `ggplot2` rendered each observation in the `mpg`
+dataframe by using the `displ` and `hwy` variables as the x- and y-coordinates
+of a point.
 
 There is much, much more to understand, but this is the foundation.
 
-Before leaving this first example, we note that for any geometric object, each 
-of the visual properties it supports can be either mapped to a variable in the 
-data or set to a constant.
+Note that for any geometric object, each of the visual properties it supports
+can be either mapped to a variable in the data or set to a constant. Any
+properties you don't use are set to default constants by `ggplot2`. The point
+geom used above supports not only x and y, but also color, shape, and size.
+Since we did not specify otherwise, `ggplot2` showed the points as 3mm black
+circles.
 
-used here 
-(points), in addition to x and y position, also has the visual properties of 
-color, shape, and size.
+# The Six Components of the Grammar
 
-visual properties that 
-can be used to represent a variable often include such things as size, 
-shape, and color:
-
-```{r fig-ggplot-color}
-ggplot(mpg, aes(displ, hwy, color = class)) + geom_point()
-```
-
-
-
+Ffffff
